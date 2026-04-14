@@ -40,9 +40,6 @@ Movies
 
 Genres
 
-    GET /api/genres
-    Returns an array of all available genres.
-
     GET /api/genres/:genre
     Returns movies matching the exact genre.
 
@@ -64,3 +61,113 @@ The genre, search, and crew endpoints support the following optional query param
     sortBy: String. The property to sort results by (release_year, rating, or popularity).
 
     order: String. The sort direction (ASC or DESC. Default: DESC).
+
+---
+The shape of Movie
+
+```
+interface MovieRecord {
+  tmdb_id: number;
+  imdb_id: string;
+  title: string;
+  original_title: string;
+  original_language: string;
+  release_date: string; // YYYY-MM-DD
+  year: number;
+  runtime: number;
+  status: string;
+  age_certification: string | null;
+  tagline: string;
+  plot_summary: string;
+  genres: string[];
+  keywords: string[];
+  alternative_titles: string[];
+  production_countries: Array<{
+    iso_3166_1: string;
+    name: string;
+  }>;
+  spoken_languages: Array<{
+    english_name: string;
+    iso_639_1: string;
+    name: string;
+  }>;
+  ratings: {
+    tmdb_rating: number;
+    tmdb_votes: number;
+    imdb_rating: string;
+    imdb_votes: string;
+    metascore: number | string | null;
+  };
+  box_office: string;
+  images: {
+    poster: string;
+    poster_original: string;
+    poster2: string;
+    backdrop_original: string;
+    backdrop: string;
+  };
+  videos: {
+    youtube_trailer_keys: string[];
+  };
+  where_to_watch: Record<string, string[]>; // e.g., { "US": ["Darkroom"] }
+  credits: {
+    directors: Array<{
+      id: number;
+      name: string;
+    }>;
+    writers: Array<{
+      id: number;
+      name: string;
+      job: string;
+    }>;
+    actors: Array<{
+      id: number;
+      name: string;
+      character: string;
+      profile_image: string | null;
+    }>;
+    crew: Array<{
+      id: number;
+      name: string;
+      job: string;
+      department: string;
+    }>;
+  };
+  budget: number;
+  revenue: number;
+  source: string[] | null;
+  collection: any | null; 
+  restricted: boolean;
+}
+```
+---
+The shape of Movie Search Result
+
+```
+interface PaginatedMovieResponse {
+  count: number;
+  page: number;
+  results: MovieSummary[];
+}
+
+interface MovieSummary {
+  tmdb_id: number;
+  title: string;
+  year: number;
+  imdb_id: string;
+  genres: string[];
+  country: string[];
+  language: string;
+  tagline: string;
+  poster: string;
+  poster2: string;
+  directors: string[];
+  actors: string[];
+  imdb_rating: string;
+  imdb_votes: string;
+  metascore: string;
+  audience_rating: string;
+  runtime: number;
+  available: boolean;
+}
+```
